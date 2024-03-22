@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vllm-phi-2
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: vllm-phi-2
+    image: vllm/vllm-openai:latest
+    args:
+      - "--model"
+      - "angelmmiguel/phi2-intro-finetuned-demo"
+    resources:
+      limits:
+        nvidia.com/gpu: 1

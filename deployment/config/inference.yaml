@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vllm-phi-2
+spec:
+  restartPolicy: OnFailure
+  volumes:
+    - name: llm-volume
+      emptyDir: {}
+  initContainers:
+  - name: oci-image-loader
+    image: kubeconna23.azurecr.io/image-loader
+    volumeMounts:
+      - name: llm-volume
+        mountPath: /llm
+  containers:
+  - name: vllm-phi-2
+    image: vllm/vllm-openai:latest
+    args:
+      - "--model"
+      - "/llm"
+    volumeMounts:
+      - name: llm-volume
+        mountPath: /llm
+    resources:
+      limits:
+        nvidia.com/gpu: 1
